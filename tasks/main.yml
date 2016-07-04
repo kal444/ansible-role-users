@@ -1,2 +1,29 @@
 ---
 # tasks file for ansible-role-users
+- name: install zsh
+  apt: name=zsh state=present
+  when: ansible_os_family == 'Debian'
+
+- name: install zsh
+  yum: name=zsh state=present
+  when: ansible_os_family == 'RedHat'
+
+- name: create users
+  user: name={{ item.key }} comment="{{ item.value.name }}" shell={{ item.value.shell }} state=present
+  with_dict: "{{ users_users }}"
+
+- name: push out ssh keys
+  authorized_key: user={{ item.key }} key="{{ item.value.public_key }}"
+  with_dict: "{{ users_users }}"
+
+- name: setup sudoers
+  template: src=etc/sudoers.d/ansible.j2 dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
+
+- name: disable user passwords
+  user: name={{ item.key }} password=*
+  with_dict: "{{ users_users|default({}) }}"
+  when: {{ item.value.disable_password }}
+
+- name: disable root password
+  user: name=root password=*
+  when: users_root_disable_password

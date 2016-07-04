@@ -1,0 +1,13 @@
+{% for key, value in users_users.iteritems() %}
+
+{% if value.sudo_enabled %}
+
+{% if value.sudo_nopassword %}
+{{ key }} ALL=(ALL) NOPASSWD: ALL
+{% else %}
+{{ key }} ALL=(ALL) ALL
+{% endif %}
+
+{% endif %}
+
+{% endfor %}
