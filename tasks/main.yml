@@ -12,8 +12,17 @@
   user: name={{ item.key }} comment="{{ item.value.name }}" shell={{ item.value.shell }} state=present
   with_dict: "{{ users_users }}"
 
+- name: generate ssh keys
+  command: ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
+  args:
+    creates: ~/.ssh/id_rsa
+  with_dict: "{{ users_users }}"
+  when: {{ item.value.generate_ssh_key }}
+  become: true
+  become_user: {{ item.key }}
+
 - name: push out ssh keys
-  authorized_key: user={{ item.key }} key="{{ item.value.public_key }}"
+  authorized_key: user={{ item.key }} key="{{ item.value.authorized_key }}"
   with_dict: "{{ users_users }}"
 
 - name: setup sudoers

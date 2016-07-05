@@ -7,7 +7,8 @@ users_users:
     sudo_enabled: true
     sudo_nopassword: true
     disable_password: true
-    public_key: >
+    generate_ssh_key: true
+    authorized_key: >
       ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2IL9x16W1I404acwDJKh1wLyl8mhyZW7/3s5SNSAzE
       MHlNq9XNbPR8bpALEcekTiaLyDqnqAdJyfU3UntLp4MC6iVCIctBxuwcVg2wrsrMnOBAj6ti4RriLHT6R
       TTsVzohAFWvbFEmmEMPsdyaTY4woLbCi/351uschQN4tRzehYYiyrJi+617u9o/DozJOqOSdXYkUMGimX
