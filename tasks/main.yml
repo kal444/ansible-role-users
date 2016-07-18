@@ -38,7 +38,7 @@
   when: users_root_disable_password
 
 - name: echo public keys (you might need this to allow deploy)
-  shell: echo ssh pubkey for user: "{{ item.key | quote }}" && cat ~/.ssh/id_rsa.pub
+  shell: echo ssh pubkey for user "{{ item.key | quote }}" && cat ~/.ssh/id_rsa.pub
   args:
     # doesn't actually remove the ssh pubkey file
     # this task just shouldn't run if the file isn't there
