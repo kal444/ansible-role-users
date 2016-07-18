@@ -26,6 +26,7 @@
   with_dict: "{{ users_users }}"
   when: "{{ item.value.generate_ssh_key }}"
   become: true
+  become_user: "{{ item.key }}"
 
 - name: add authorized ssh public keys
   authorized_key: user="{{ item.key }}" key="{{ item.value.authorized_key }}"
