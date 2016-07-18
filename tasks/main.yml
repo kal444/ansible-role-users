@@ -21,6 +21,12 @@
   become: true
   become_user: "{{ item.key }}"
 
+- name: fetch generated public keys (you might need this to allow deploy)
+  fetch: src=~/.ssh/id_rsa.pub dest="keys/{{ inventory_hostname }}-{{ item.key }}.pubkey" flat=yes
+  with_dict: "{{ users_users }}"
+  when: "{{ item.value.generate_ssh_key }}"
+  become: true
+
 - name: add authorized ssh public keys
   authorized_key: user="{{ item.key }}" key="{{ item.value.authorized_key }}"
   with_dict: "{{ users_users }}"
@@ -36,14 +42,3 @@
 - name: disable root password
   user: name=root password=*
   when: users_root_disable_password
-
-- name: echo public keys (you might need this to allow deploy)
-  shell: echo ssh pubkey for user "{{ item.key | quote }}" && cat ~/.ssh/id_rsa.pub
-  args:
-    # doesn't actually remove the ssh pubkey file
-    # this task just shouldn't run if the file isn't there
-    removes: ~/.ssh/id_rsa.pub
-  with_dict: "{{ users_users }}"
-  when: "{{ item.value.generate_ssh_key }}"
-  become: true
-  become_user: "{{ item.key }}"
