@@ -22,7 +22,7 @@
   become_user: "{{ item.key }}"
 
 - name: fetch generated public keys (you might need this to allow deploy).
-  fetch: src=~/.ssh/id_rsa.pub dest="keys/{{ inventory_hostname }}-{{ item.key }}.pubkey" flat=yes
+  fetch: src=~/.ssh/id_rsa.pub dest="{{ users_pubkeys_dir }}/{{ inventory_hostname }}-{{ item.key }}.pubkey" flat=yes
   with_dict: "{{ users_users }}"
   when: "{{ item.value.generate_ssh_key }}"
   become: true
