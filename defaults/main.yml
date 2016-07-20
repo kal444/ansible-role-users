@@ -17,4 +17,4 @@ users_users:
 
 users_pubkeys_dir: .keys
 
-users_root_disable_password: true
+users_root_disable_password: false
