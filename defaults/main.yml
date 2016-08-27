@@ -1,11 +1,11 @@
 ---
 # defaults file for ansible-role-users
-users_users:
+users_users_default:
   app:
     name: App User
     shell: /bin/bash
     # comma-delimited list of groups, will be appended to existing groups
-    groups: ""
+    groups: ''
     sudo_enabled: true
     sudo_nopassword: true
     disable_password: true
@@ -16,6 +16,8 @@ users_users:
       TTsVzohAFWvbFEmmEMPsdyaTY4woLbCi/351uschQN4tRzehYYiyrJi+617u9o/DozJOqOSdXYkUMGimX
       CabrI5KDi1FDNwKxELjrqkcrRZ5Yiunc5XEaGjPF//CqKhxP1Jmw/TvOENODlY0CYHjbPmqFSaMI8GIxK
       LZOjIoSFy14OsB1rCB64N9RXjGECdJon8YOZKevqzOx2khV1NCd22t6b app@yellowaxe.com
+
+users_users:
 
 users_pubkeys_dir: .keys
 

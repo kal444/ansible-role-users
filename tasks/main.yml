@@ -10,32 +10,32 @@
 
 - name: create users.
   user: name="{{ item.key }}" comment="{{ item.value.name }}" shell="{{ item.value.shell }}" state=present
-  with_dict: "{{ users_users }}"
+  with_dict: "{{ users_users_default | combine(users_users) }}"
 
 - name: addtional groups
   user: name="{{ item.key }}" groups="{{ item.value.groups }}" append=yes
-  with_dict: "{{ users_users }}"
+  with_dict: "{{ users_users_default | combine(users_users) }}"
 
 - name: generate ssh keys.
   user: name="{{ item.key }}" generate_ssh_key=yes ssh_key_bits=2048 ssh_key_type=rsa ssh_key_file=.ssh/id_rsa
-  with_dict: "{{ users_users }}"
+  with_dict: "{{ users_users_default | combine(users_users) }}"
   when: "{{ item.value.generate_ssh_key }}"
 
 - name: fetch generated public keys (you might need this to allow deploy).
   fetch: src="~{{ item.key }}/.ssh/id_rsa.pub" dest="{{ users_pubkeys_dir }}/{{ inventory_hostname }}-{{ item.key }}.pubkey" flat=yes
-  with_dict: "{{ users_users }}"
+  with_dict: "{{ users_users_default | combine(users_users) }}"
   when: "{{ item.value.generate_ssh_key }}"
 
 - name: add authorized ssh public keys.
   authorized_key: user="{{ item.key }}" key="{{ item.value.authorized_key }}"
-  with_dict: "{{ users_users }}"
+  with_dict: "{{ users_users_default | combine(users_users) }}"
 
 - name: setup sudoers.
   template: src=etc/sudoers.d/ansible.j2 dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
 
 - name: disable user passwords.
   user: name="{{ item.key }}" password=*
-  with_dict: "{{ users_users }}"
+  with_dict: "{{ users_users_default | combine(users_users) }}"
   when: "{{ item.value.disable_password }}"
 
 - name: disable root password.

@@ -1,4 +1,4 @@
-{% for key, value in users_users.iteritems() %}
+{% for key, value in (users_users_default | combine(users_users)).iteritems() %}
 
 {% if value.sudo_enabled %}
 
