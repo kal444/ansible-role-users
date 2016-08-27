@@ -17,7 +17,7 @@ users_users_default:
       CabrI5KDi1FDNwKxELjrqkcrRZ5Yiunc5XEaGjPF//CqKhxP1Jmw/TvOENODlY0CYHjbPmqFSaMI8GIxK
       LZOjIoSFy14OsB1rCB64N9RXjGECdJon8YOZKevqzOx2khV1NCd22t6b app@yellowaxe.com
 
-users_users:
+users_users: {}
 
 users_pubkeys_dir: .keys
 
