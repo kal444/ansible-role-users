@@ -4,6 +4,8 @@ users_users:
   app:
     name: App User
     shell: /bin/bash
+    # comma-delimited list of groups, will be appended to existing groups
+    groups: ""
     sudo_enabled: true
     sudo_nopassword: true
     disable_password: true
