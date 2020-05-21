@@ -5,8 +5,11 @@
   when: ansible_os_family == 'Debian'
 
 - name: install zsh.
-  yum: name=zsh state=present
-  when: ansible_os_family == 'RedHat'
+  package:
+    name: zsh
+    state: present
+  when:
+    - ansible_os_family == 'RedHat'
 
 - name: create users.
   user: name="{{ item.key }}" comment="{{ item.value.name }}" shell="{{ item.value.shell }}" state=present
@@ -19,12 +22,12 @@
 - name: generate ssh keys.
   user: name="{{ item.key }}" generate_ssh_key=yes ssh_key_bits=2048 ssh_key_type=rsa ssh_key_file=.ssh/id_rsa
   with_dict: "{{ users_users_default | combine(users_users) }}"
-  when: "{{ item.value.generate_ssh_key }}"
+  when: item.value.generate_ssh_key
 
 - name: fetch generated public keys (you might need this to allow deploy).
   fetch: src="~{{ item.key }}/.ssh/id_rsa.pub" dest="{{ users_pubkeys_dir }}/{{ inventory_hostname }}-{{ item.key }}.pubkey" flat=yes
   with_dict: "{{ users_users_default | combine(users_users) }}"
-  when: "{{ item.value.generate_ssh_key }}"
+  when: item.value.generate_ssh_key
 
 - name: add authorized ssh public keys.
   authorized_key: user="{{ item.key }}" key="{{ item.value.authorized_key }}"
@@ -36,7 +39,7 @@
 - name: disable user passwords.
   user: name="{{ item.key }}" password=*
   with_dict: "{{ users_users_default | combine(users_users) }}"
-  when: "{{ item.value.disable_password }}"
+  when: item.value.disable_password
 
 - name: disable root password.
   user: name=root password=*

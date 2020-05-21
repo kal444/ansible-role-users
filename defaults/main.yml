@@ -1,5 +1,4 @@
 ---
-# defaults file for ansible-role-users
 users_users_default:
   app:
     name: App User
